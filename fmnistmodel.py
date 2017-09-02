@@ -1,10 +1,10 @@
-import pickle as p #to dump the parameters for later use
-import numpy as np #Computing library
-import matplotlib.pyplot as plt #to plot the error(Cost).
+import pickle as p                               #to dump the parameters for later use
+import numpy as np                               #Computing library
+import matplotlib.pyplot as plt                  #to plot the error(Cost).
 
-data=p.load(open('fmnistdata.d','rb')) #Fashion MNIST dataset downloaded from Kaggle and dumped as ".d" and loaded it here.
-X,Y=data["X_train"],data["Y_train"] #One-hot encoded Y.
-np.random.seed(6) #For consistent results
+data=p.load(open('fmnistdata.d','rb'))           #Fashion MNIST dataset downloaded from Kaggle and dumped as ".d" and loaded it here.
+X,Y=data["X_train"],data["Y_train"]              #One-hot encoded Y.
+np.random.seed(6)                                #For consistent results
 
 #Activation functions
 def g(type,z,deriv=False):
@@ -103,7 +103,7 @@ def model(X,Y,iters=1000,learning_rate=0.01):
 x,y=X[:,0:100]/255,Y[:,0:100]
 
 def mainfun(x,y):
-    iterss=1000 #1000 iters can be increased for more accuracy ,just for debugging.
+    iterss=1000                                     #1000 iters can be increased for more accuracy ,just for debugging.
     params,eror=model(x,y,iterss)
     p.dump(params,open('fmnistparams.d','wb'))
     plt.plot(np.arange(iterss),eror)
