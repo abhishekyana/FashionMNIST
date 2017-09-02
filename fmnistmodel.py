@@ -1,11 +1,12 @@
-import pickle as p
-import numpy as np
-import matplotlib.pyplot as plt
+import pickle as p #to dump the parameters for later use
+import numpy as np #Computing library
+import matplotlib.pyplot as plt #to plot the error(Cost).
 
-data=p.load(open('fmnistdata.d','rb'))
-X,Y=data["X_train"],data["Y_train"]
-np.random.seed(6)
+data=p.load(open('fmnistdata.d','rb')) #Fashion MNIST dataset downloaded from Kaggle and dumped as ".d" and loaded it here.
+X,Y=data["X_train"],data["Y_train"] #One-hot encoded Y.
+np.random.seed(6) #For consistent results
 
+#Activation functions
 def g(type,z,deriv=False):
     if type=='sigmoid':
         if deriv==True:
@@ -15,7 +16,7 @@ def g(type,z,deriv=False):
         if deriv==True:
             return z>=0
         return np.maximum(0,z)
-
+#for random normal initialization 
 def initialize_params(n_x,n_h,n_y):
     W1=np.random.randn(n_h,n_x)*0.01
     b1=np.random.randn(n_h,1)*0.01
@@ -55,10 +56,12 @@ def back_propagation(X,Y,cache,params):
     grads={"dW1":dW1,"dW2":dW2,"db1":db1,"db2":db2}
     return grads
 
+#Threshold is set to 0.5(50% probability) P(Y=1|X).
 def predict(X,params):
     A2,cache=forward_propagation(X,params)
     return A2>0.5
 
+#Derivatives obtaoned with backpropagation
 def update_params(params,grads,learning_rate=0.01):
     dW1=grads["dW1"]
     dW2=grads["dW2"]
@@ -74,6 +77,8 @@ def update_params(params,grads,learning_rate=0.01):
     b2=b2-learning_rate*db2
     params={"W1":W1,"W2":W2,"b1":b1,"b2":b2}
     return params
+
+
 def compute_cost(A2,Y):
     m=Y.shape[1]
     logprobs = np.multiply(np.log(A2),Y)+np.multiply(np.log(1-A2),(1-Y))
@@ -81,6 +86,7 @@ def compute_cost(A2,Y):
     cost = np.squeeze(cost)
     return cost
 
+#Putting All togather.
 def model(X,Y,iters=1000,learning_rate=0.01):
     params=initialize_params(X.shape[0],1000,Y.shape[0])
     eror=[]
@@ -93,15 +99,15 @@ def model(X,Y,iters=1000,learning_rate=0.01):
         eror.append(cost)
     return params,eror
 
+#For debugging trained for first #100 batch data.
 x,y=X[:,0:100]/255,Y[:,0:100]
 
 def mainfun(x,y):
-    iterss=1000
+    iterss=1000 #1000 iters can be increased for more accuracy ,just for debugging.
     params,eror=model(x,y,iterss)
     p.dump(params,open('fmnistparams.d','wb'))
     plt.plot(np.arange(iterss),eror)
     plt.show()
-    return None
 
 if __name__=='__main__':
     mainfun(x,y)
