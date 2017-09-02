@@ -3,7 +3,7 @@ import pickle as p
 from mlxtend.preprocessing import one_hot
 
 #open and read the content of file
-file='fmnist_train.csv'
+file='fashion-mnist_train.csv'
 with open(file,'r') as f:
     data=f.read()
 #Cleaning the data from csv
@@ -20,7 +20,7 @@ X=npdata[:,1:]
 X_train=X.T; Y_train=one_hot(Y.reshape(Y.shape[0],)).T
  #debugging
 
-file='fmnist_test.csv'
+file='fashion-mnist_test.csv'
 with open(file,'r') as f:
     data=f.read()
 #Cleaning the data from csv
